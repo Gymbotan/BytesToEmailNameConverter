@@ -18,6 +18,19 @@ namespace ConverterTests
             Assert.AreEqual(expectedResult, actualResult);
         }
 
+        [TestCase(new byte[] { 0, 0, 1 })]
+        [TestCase(new byte[] { 255, 255, 255 })]
+        [TestCase(new byte[] { 1, 1, 1 })]
+        [TestCase(new byte[] { 128, 255, 1 })]
+        [TestCase(new byte[] { 18, 231, 112 })]
+        [TestCase(new byte[] { 138, 31, 192, 211, 234, 7, 77, 177, 54, 139 })]
+        public void BytesToStringAndToBytes_CorrectConverting(byte[] array)
+        {
+            Converter converter = new Converter();
+            var actualResult = converter.ConvertStringToByteArray(converter.ConvertBytesToEmailName(array));
+            Assert.AreEqual(array, actualResult);
+        }
+
         [TestCase("aaah7", new byte[] { 0, 0, 255 })]
         [TestCase("b6ibb", new byte[] { 31, 32, 33 })]
         [TestCase("friend", new byte[] { 11, 20, 17, 163 })]
