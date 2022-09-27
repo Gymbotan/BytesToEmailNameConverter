@@ -7,6 +7,11 @@ namespace BitsToSymbols
     {
         public string ConvertBytesToEmailName(byte[] array)
         {
+            if (array is null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
             byte[] fiveBitsArray = ConvertEightToFiveBits(array);
             char[] symbolsArray = new char[fiveBitsArray.Length];
             for (int i = 0; i < symbolsArray.Length; i++)
@@ -18,20 +23,22 @@ namespace BitsToSymbols
 
         public byte[] ConvertStringToByteArray(string name)
         {
+            if (name is null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (name.Length > 64)
+            {
+                throw new ArgumentException("Email's name can not be longer than 64 symbols.", nameof(name));
+            }
+
             char[] symbolsArray = name.ToCharArray();
             byte[] fiveBitsArray = new byte[symbolsArray.Length];
-            int i = 0;
-            try
+            
+            for (int i = 0; i < fiveBitsArray.Length; i++)
             {
-                for (i = 0; i < fiveBitsArray.Length; i++)
-                {
-                    fiveBitsArray[i] = ToBits(symbolsArray[i]);
-                }
-            }
-            catch (ArgumentOutOfRangeException exception)
-            {
-                Console.WriteLine(exception.Message);
-                Console.WriteLine($"Inputed string has wrong symbol {symbolsArray[i]}. Allowed symbols are: [a-z],[1-6].");
+                fiveBitsArray[i] = ToBits(symbolsArray[i]);
             }
 
             return ConvertFiveToEightBits(fiveBitsArray);
@@ -39,6 +46,11 @@ namespace BitsToSymbols
 
         private byte[] ConvertEightToFiveBits(byte[] array)
         {
+            if (array is null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
             int size = array.Length * 8 % 5 == 0 ? array.Length * 8 / 5 : array.Length * 8 / 5 + 1;
             int currentPosition = size - 1;
             byte[] result = new byte[size];
@@ -50,12 +62,30 @@ namespace BitsToSymbols
                 number = number >> 5;
                 currentPosition--;
             }
+
+            if (result.Length > 64)
+            {
+                throw new ArgumentException("Initial array is too big to create coorect email's name (name can not be longer than 64 symbols).", nameof(array));
+            }
+
             return result;
         }
 
         private byte[] ConvertFiveToEightBits(byte[] array)
         {
+            if (array is null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
+            if (array.Length > 64)
+            {
+                throw new ArgumentException("Email's name can not be longer than 64 symbols.", nameof(array));
+            }
+
             BigInteger number = 0;
+            int size = array.Length * 5 / 8;
+            byte[] resultArray = new byte[size];
             for (int i = 0; i < array.Length; i++)
             {
                 if (array[i] >= 32)
@@ -66,7 +96,21 @@ namespace BitsToSymbols
                 number = number << 5;
                 number |= array[i];
             }
-            return number.ToByteArray(true, true);
+
+            byte[] tempArray = number.ToByteArray(true, true);
+            if (tempArray.Length >= resultArray.Length)
+            {
+                return tempArray;
+            }
+            else
+            {
+                for (int i = 1; i <= tempArray.Length; i++)
+                {
+                    resultArray[^i] = tempArray[^i];
+                }
+
+                return resultArray;
+            }
         }
 
         private char ConvertByteToSymbol(byte bits) => bits switch
@@ -97,12 +141,12 @@ namespace BitsToSymbols
             23 => 'x',
             24 => 'y',
             25 => 'z',
-            26 => '1',
-            27 => '2',
-            28 => '3',
-            29 => '4',
-            30 => '5',
-            31 => '6',
+            26 => '2',
+            27 => '3',
+            28 => '4',
+            29 => '5',
+            30 => '6',
+            31 => '7',
             _ => throw new ArgumentOutOfRangeException(nameof(bits)),
         };
 
@@ -134,12 +178,12 @@ namespace BitsToSymbols
             'x' => 23,
             'y' => 24,
             'z' => 25,
-            '1' => 26,
-            '2' => 27,
-            '3' => 28,
-            '4' => 29,
-            '5' => 30,
-            '6' => 31,
+            '2' => 26,
+            '3' => 27,
+            '4' => 28,
+            '5' => 29,
+            '6' => 30,
+            '7' => 31,
             _ => throw new ArgumentOutOfRangeException(nameof(symbol)),
         };
 

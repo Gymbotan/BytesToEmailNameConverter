@@ -19,6 +19,32 @@ namespace Converting
             byte[] publicKey = converter.ConvertStringToByteArray(name);
             Console.WriteLine("\nEmail name converted to byte array:");
             Print(publicKey);
+
+            //Console.WriteLine("\nEmail name:");
+            //name = "friend";
+            //Console.WriteLine(name);
+            //Console.WriteLine($"Name's length: {name.Length}");
+            //publicKey = converter.ConvertStringToByteArray(name);
+            //Console.WriteLine("\nEmail name converted to byte array:");
+            //Print(publicKey);
+
+            Console.WriteLine("\nEmail name:");
+            name = "hfbvmtj46djg7xvgdxxmoloe35fgjnmnfd73khj5fxfb2egloj2bx";
+            Console.WriteLine(name);
+            Console.WriteLine($"Name's length: {name.Length}");
+            publicKey = converter.ConvertStringToByteArray(name);
+            Console.WriteLine("\nEmail name converted to byte array:");
+            Print(publicKey);
+
+
+            //array = new byte[] { 0, 0, 255 };
+            //Print(array);
+            //Console.WriteLine("\nEmail name:");
+            //name = converter.ConvertBytesToEmailName(array);
+            //Console.WriteLine(name);
+            //publicKey = converter.ConvertStringToByteArray(name);
+            //Console.WriteLine("\nEmail name converted to byte array:");
+            //Print(publicKey);
         }
 
         public static void Print(byte[] array)
