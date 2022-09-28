@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitsToSymbols", "BitsToSymbols\BitsToSymbols.csproj", "{62A53A08-F568-498D-8262-33665D5009DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converting", "Converting\Converting.csproj", "{D6EE8798-98BE-4BEB-93BA-482AF7C77A8F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConverterTests", "ConverterTests\ConverterTests.csproj", "{4041EF0A-4D34-43CD-ACAD-BAED38FF721C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConverterTests", "ConverterTests\ConverterTests.csproj", "{4041EF0A-4D34-43CD-ACAD-BAED38FF721C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{62A53A08-F568-498D-8262-33665D5009DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62A53A08-F568-498D-8262-33665D5009DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62A53A08-F568-498D-8262-33665D5009DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6EE8798-98BE-4BEB-93BA-482AF7C77A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6EE8798-98BE-4BEB-93BA-482AF7C77A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6EE8798-98BE-4BEB-93BA-482AF7C77A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6EE8798-98BE-4BEB-93BA-482AF7C77A8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4041EF0A-4D34-43CD-ACAD-BAED38FF721C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4041EF0A-4D34-43CD-ACAD-BAED38FF721C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4041EF0A-4D34-43CD-ACAD-BAED38FF721C}.Release|Any CPU.ActiveCfg = Release|Any CPU

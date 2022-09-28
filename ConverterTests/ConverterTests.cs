@@ -23,6 +23,9 @@ namespace ConverterTests
         [TestCase(new byte[] { 1, 1, 1 })]
         [TestCase(new byte[] { 128, 255, 1 })]
         [TestCase(new byte[] { 18, 231, 112 })]
+        [TestCase(new byte[] { 0, 0, 0, 1 })]
+        [TestCase(new byte[] { 255, 255, 255, 255 })]
+        [TestCase(new byte[] { 1, 1, 1, 1 })]
         [TestCase(new byte[] { 138, 31, 192, 211, 234, 7, 77, 177, 54, 139 })]
         public void BytesToStringAndToBytes_CorrectConverting(byte[] array)
         {
