@@ -3,13 +3,26 @@ using System.Numerics;
 
 namespace BitsToSymbols
 {
+    /// <summary>
+    /// Allows to convert array of bytes to a string of symbols that can be an email name and vice versa. 
+    /// Symbols dictionary is [abcdefghijkmnpqrstuvwxyz23456789]. 1 and l, 0 and o looks similar so they were deleted.
+    /// </summary>
     public class Converter
     {
+        private const int MaxEmailNameSize = 64;
+        private const int ByteSize = 8;
+        private const int FiveBitsSize = 5;
+
         public string ConvertBytesToEmailName(byte[] array)
         {
             if (array is null)
             {
                 throw new ArgumentNullException(nameof(array));
+            }
+
+            if (array.Length < 1)
+            {
+                throw new ArgumentException("Array should contain at least 1 element.");
             }
 
             byte[] fiveBitsArray = ConvertEightToFiveBits(array);
@@ -28,9 +41,14 @@ namespace BitsToSymbols
                 throw new ArgumentNullException(nameof(name));
             }
 
-            if (name.Length > 64)
+            if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException("Email's name can not be longer than 64 symbols.", nameof(name));
+                throw new ArgumentException("Email's name can not be empty or whitespace.");
+            }
+
+            if (name.Length > MaxEmailNameSize)
+            {
+                throw new ArgumentException($"Email's name can not be longer than {MaxEmailNameSize} symbols.", nameof(name));
             }
 
             char[] symbolsArray = name.ToCharArray();
@@ -51,7 +69,17 @@ namespace BitsToSymbols
                 throw new ArgumentNullException(nameof(array));
             }
 
-            int size = array.Length * 8 % 5 == 0 ? array.Length * 8 / 5 : array.Length * 8 / 5 + 1;
+            if (array.Length < 1)
+            {
+                throw new ArgumentException("Array should contain at least 1 element.");
+            }
+
+            int size = array.Length * ByteSize % FiveBitsSize == 0 ? array.Length * ByteSize / FiveBitsSize : array.Length * ByteSize / FiveBitsSize + 1;
+            if (size > MaxEmailNameSize)
+            {
+                throw new ArgumentException($"Initial array is too big to create correct email's name (name can not be longer than {MaxEmailNameSize} symbols).", nameof(array));
+            }
+            
             int currentPosition = size - 1;
             byte[] result = new byte[size];
             BigInteger number = new BigInteger(array, true, true);
@@ -59,13 +87,8 @@ namespace BitsToSymbols
             {
                 byte lastFiveBits = (byte)(number & 31);
                 result[currentPosition] = lastFiveBits;
-                number = number >> 5;
+                number = number >> FiveBitsSize;
                 currentPosition--;
-            }
-
-            if (result.Length > 64)
-            {
-                throw new ArgumentException("Initial array is too big to create coorect email's name (name can not be longer than 64 symbols).", nameof(array));
             }
 
             return result;
@@ -78,13 +101,13 @@ namespace BitsToSymbols
                 throw new ArgumentNullException(nameof(array));
             }
 
-            if (array.Length > 64)
+            if (array.Length > MaxEmailNameSize)
             {
-                throw new ArgumentException("Email's name can not be longer than 64 symbols.", nameof(array));
+                throw new ArgumentException($"Email's name can not be longer than {MaxEmailNameSize} symbols.", nameof(array));
             }
 
-            BigInteger number = 0;
-            int size = array.Length * 5 / 8;
+            BigInteger number = 0; 
+            int size = array.Length * FiveBitsSize / ByteSize;
             byte[] resultArray = new byte[size];
             for (int i = 0; i < array.Length; i++)
             {
@@ -93,7 +116,7 @@ namespace BitsToSymbols
                     throw new ArgumentOutOfRangeException(nameof(array),
                         $"Array at index {i} has wrong value. Allowed values are from 0 to 31.");
                 }
-                number = number << 5;
+                number = number << FiveBitsSize;
                 number |= array[i];
             }
 
@@ -126,27 +149,27 @@ namespace BitsToSymbols
             8 => 'i',
             9 => 'j',
             10 => 'k',
-            11 => 'l',
-            12 => 'm',
-            13 => 'n',
-            14 => 'o',
-            15 => 'p',
-            16 => 'q',
-            17 => 'r',
-            18 => 's',
-            19 => 't',
-            20 => 'u',
-            21 => 'v',
-            22 => 'w',
-            23 => 'x',
-            24 => 'y',
-            25 => 'z',
-            26 => '2',
-            27 => '3',
-            28 => '4',
-            29 => '5',
-            30 => '6',
-            31 => '7',
+            11 => 'm',
+            12 => 'n',
+            13 => 'p',
+            14 => 'q',
+            15 => 'r',
+            16 => 's',
+            17 => 't',
+            18 => 'u',
+            19 => 'v',
+            20 => 'w',
+            21 => 'x',
+            22 => 'y',
+            23 => 'z',
+            24 => '2',
+            25 => '3',
+            26 => '4',
+            27 => '5',
+            28 => '6',
+            29 => '7',
+            30 => '8',
+            31 => '9',
             _ => throw new ArgumentOutOfRangeException(nameof(bits)),
         };
 
@@ -163,27 +186,27 @@ namespace BitsToSymbols
             'i' => 8,
             'j' => 9,
             'k' => 10,
-            'l' => 11,
-            'm' => 12,
-            'n' => 13,
-            'o' => 14,
-            'p' => 15,
-            'q' => 16,
-            'r' => 17,
-            's' => 18,
-            't' => 19,
-            'u' => 20,
-            'v' => 21,
-            'w' => 22,
-            'x' => 23,
-            'y' => 24,
-            'z' => 25,
-            '2' => 26,
-            '3' => 27,
-            '4' => 28,
-            '5' => 29,
-            '6' => 30,
-            '7' => 31,
+            'm' => 11,
+            'n' => 12,
+            'p' => 13,
+            'q' => 14,
+            'r' => 15,
+            's' => 16,
+            't' => 17,
+            'u' => 18,
+            'v' => 19,
+            'w' => 20,
+            'x' => 21,
+            'y' => 22,
+            'z' => 23,
+            '2' => 24,
+            '3' => 25,
+            '4' => 26,
+            '5' => 27,
+            '6' => 28,
+            '7' => 29,
+            '8' => 30,
+            '9' => 31,
             _ => throw new ArgumentOutOfRangeException(nameof(symbol)),
         };
 
